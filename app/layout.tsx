@@ -26,9 +26,9 @@ export const metadata: Metadata = {
   title: "NoteHub",
   description: "Write, organize, and store your notes with ease.",
   openGraph: {
-    title: `NoteHub`,
+    title: "NoteHub", 
     description: "Write, organize, and store your notes with ease.",
-    url: `https://08-zustand-phi-three.vercel.app/`,
+    url: "https://08-zustand-phi-three.vercel.app/", 
     siteName: "NoteHub",
     images: [
       {
@@ -51,7 +51,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      {}
+      <body className={`${geistSans.variable} ${geistMono.variable} ${roboto.className}`}>
         <TanStackProvider>
           <Header />
           <main>
@@ -64,3 +65,4 @@ export default function RootLayout({
     </html>
   );
 }
+

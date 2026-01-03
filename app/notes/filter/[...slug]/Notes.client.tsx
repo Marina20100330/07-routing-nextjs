@@ -5,8 +5,7 @@ import css from "./Notesclient.module.css";
 import {
   useQuery,
   keepPreviousData,
-  useQueryClient,
-} from "@tanstack/react-query";
+  } from "@tanstack/react-query";
 import { fetchNotes } from "@/lib/api";
 import NoteList from "@/components/NoteList/NoteList";
 import Pagination from "@/components/Pagination/Pagination";
@@ -26,7 +25,7 @@ export default function NotesClient({ category }: NotesClientProps) {
   const [search, setSearch] = useState("");
 
   const perPage = 8;
-  const queryClient = useQueryClient();
+  
 
   const { data, isLoading, isError, isFetching } = useQuery({
     queryKey: [
