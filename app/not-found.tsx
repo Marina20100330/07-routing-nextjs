@@ -1,4 +1,4 @@
-import css from "./Home.module.css";
+import css from "./NotFound.module.css";
 import { Metadata } from "next";
 
 const NotFound = () => {
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     title: "Page Not Found | Notes App",
     description:
       "This page does not exist. Discover more features and create notes on our homepage.",
-    url: `https://08-zustand-phi-three.vercel.app`,
+    url: "https://08-zustand-phi-three.vercel.app",
     siteName: "NoteHub",
     images: [
       {
