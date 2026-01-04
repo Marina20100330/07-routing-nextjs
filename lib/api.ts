@@ -1,6 +1,6 @@
 import axios from "axios";
-import type { Note, NoteId, SortBy, CategoryNoAll } from "@/types/note";
-import { CATEGORIES } from "@/types/note";
+import type { Note, NoteId, SortBy, CategoryNoAll } from "../types/note";
+import { CATEGORIES } from "../types/note";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
@@ -15,6 +15,8 @@ if (API_KEY) {
 
 export interface NotesResponse {
   notes: Note[];
+  page: number;
+  perPage: number;
   totalPages: number;
 }
 
@@ -40,7 +42,7 @@ export async function fetchNotes(
 
 export async function createNote(
   newNote: Omit<Note, "id" | "createdAt" | "updatedAt">
-) {
+): Promise<Note> {
   const { data } = await apiClient.post<Note>("/notes", newNote);
   return data;
 }

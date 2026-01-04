@@ -5,17 +5,17 @@ import css from "./Notesclient.module.css";
 import {
   useQuery,
   keepPreviousData,
-  } from "@tanstack/react-query";
+} from "@tanstack/react-query";
 import { fetchNotes } from "@/lib/api";
 import NoteList from "@/components/NoteList/NoteList";
 import Pagination from "@/components/Pagination/Pagination";
 import Modal from "@/components/Modal/Modal";
 import SearchBox from "@/components/SearchBox/SearchBox";
 import NoteForm from "@/components/NoteForm/NoteForm";
-import { type Category, type CategoryNoAll } from "@/types/note"; // Добавлен импорт Category
+import { type Category, type CategoryNoAll } from "@/types/note";
 
 type NotesClientProps = {
-  category?: Category; // Изменен тип на Category
+  category?: Category;
 };
 
 export default function NotesClient({ category }: NotesClientProps) {
@@ -25,7 +25,6 @@ export default function NotesClient({ category }: NotesClientProps) {
   const [search, setSearch] = useState("");
 
   const perPage = 8;
-  
 
   const { data, isLoading, isError, isFetching } = useQuery({
     queryKey: [
@@ -52,7 +51,7 @@ export default function NotesClient({ category }: NotesClientProps) {
       setCurrentPage(1);
     }, 500);
     return () => clearTimeout(t);
-  }, [searchInput, category]); // Зависимость category здесь важна
+  }, [searchInput, category]);
 
   const hasResults = !!data?.notes?.length;
   const totalPages = data?.totalPages ?? 1;
