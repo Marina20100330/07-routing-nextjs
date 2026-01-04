@@ -12,10 +12,10 @@ import Pagination from "@/components/Pagination/Pagination";
 import Modal from "@/components/Modal/Modal";
 import SearchBox from "@/components/SearchBox/SearchBox";
 import NoteForm from "@/components/NoteForm/NoteForm";
-import { type CategoryNoAll } from "@/types/note";
+import { type Category, type CategoryNoAll } from "@/types/note"; // Добавлен импорт Category
 
 type NotesClientProps = {
-  category?: CategoryNoAll;
+  category?: Category; // Изменен тип на Category
 };
 
 export default function NotesClient({ category }: NotesClientProps) {
@@ -33,7 +33,12 @@ export default function NotesClient({ category }: NotesClientProps) {
       { page: currentPage, perPage, search, tag: category ?? null },
     ],
     queryFn: () =>
-      fetchNotes(currentPage, perPage, search || undefined, category),
+      fetchNotes(
+        currentPage,
+        perPage,
+        search || undefined,
+        category?.toLowerCase() === 'all' ? undefined : (category as CategoryNoAll)
+      ),
     placeholderData: keepPreviousData,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
@@ -47,7 +52,7 @@ export default function NotesClient({ category }: NotesClientProps) {
       setCurrentPage(1);
     }, 500);
     return () => clearTimeout(t);
-  }, [searchInput, category]);
+  }, [searchInput, category]); // Зависимость category здесь важна
 
   const hasResults = !!data?.notes?.length;
   const totalPages = data?.totalPages ?? 1;

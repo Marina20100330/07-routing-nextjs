@@ -9,60 +9,68 @@ import { type Category, type CategoryNoAll } from "@/types/note";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
-type Props = {
-  params: Promise<{ slug?: string[] }>;
-};
 
-export const dynamicParams = false;
-export const revalidate = 900;
+    type Props = {
+      
+      params: Promise<{ slug?: string[] }>; 
+    };
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug = [] } = await params;
-  const note = slug[0] || "All";
+    export const dynamicParams = false;
+    export const revalidate = 900;
 
-  return {
-    title: `Notes: ${note}`,
-    description: `Notes filtered by ${note}`,
-    openGraph: {
-      title: `Notes: ${note}`,
-      description: `Notes filter: ${note}`,
-      url: `https://08-zustand-phi-three.vercel.app//notes/filter/${note}`,
-      siteName: "NoteHub",
-      images: [
-        {
-          url: "https://ac.goit.global/fullstack/react/notehub-og-meta.jpg",
-          width: 1200,
-          height: 630,
-          alt: note,
+    export async function generateMetadata({ params }: Props): Promise<Metadata> {
+      const awaitedParams = await params;
+      const { slug = [] } = awaitedParams; 
+      const noteForMetadata = slug[0] || "All"; 
+
+      return {
+        title: `Notes: ${noteForMetadata}`,
+        description: `Notes filtered by ${noteForMetadata}`,
+        openGraph: {
+          title: `Notes: ${noteForMetadata}`,
+          description: `Notes filter: ${noteForMetadata}`,
+          url: `https://07-routing-nextjs-five-blond.vercel.app/notes/filter/${noteForMetadata}`,
+          siteName: "NoteHub",
+          images: [
+            {
+              url: "https://ac.goit.global/fullstack/react/notehub-og-meta.jpg",
+              width: 1200,
+              height: 630,
+              alt: noteForMetadata,
+            },
+          ],
+          type: "article",
         },
-      ],
-      type: "article",
-    },
-  };
-}
+      };
+    }
 
-export default async function Page({ params }: Props) {
-  const { slug = [] } = await params;
-  const tag = slug[0] as Category | undefined;
+    export default async function Page({ params }: Props) {
+      const awaitedParams = await params; 
+      const { slug = [] } = awaitedParams; 
+      const urlTag = slug[0]; 
 
-  // якщо немає slug взагалі → 404
-  if (!tag) notFound();
+      if (!urlTag) {
+        notFound();
+      }
 
-  const category: CategoryNoAll | undefined =
-    tag === "All" ? undefined : (tag as CategoryNoAll);
+      const tagForApi: CategoryNoAll | undefined =
+        urlTag.toLowerCase() === "all" ? undefined : (urlTag as CategoryNoAll);
 
-  const qc = new QueryClient();
-  await qc.prefetchQuery({
-    queryKey: [
-      "notes",
-      { page: 1, perPage: 8, search: "", tag: category ?? null },
-    ],
-    queryFn: () => fetchNotes(1, 8, undefined, category),
-  });
+      const tagForClient: Category = urlTag as Category;
 
-  return (
-    <HydrationBoundary state={dehydrate(qc)}>
-      <NotesClient category={category} />
-    </HydrationBoundary>
-  );
-}
+      const qc = new QueryClient();
+      await qc.prefetchQuery({
+        queryKey: [
+          "notes",
+          { page: 1, perPage: 8, search: "", tag: tagForApi ?? null },
+        ],
+        queryFn: () => fetchNotes(1, 8, undefined, tagForApi),
+      });
+
+      return (
+        <HydrationBoundary state={dehydrate(qc)}>
+          <NotesClient category={tagForClient} />
+        </HydrationBoundary>
+      );
+    }
+    
