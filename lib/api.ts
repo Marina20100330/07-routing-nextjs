@@ -3,14 +3,14 @@ import type { Note, NoteId, SortBy, CategoryNoAll } from "../types/note";
 import { CATEGORIES } from "../types/note";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
-const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
+const API_TOKEN = process.env.NEXT_PUBLIC_API_TOKEN;
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
 });
 
-if (API_KEY) {
-  apiClient.defaults.headers.common["Authorization"] = `Bearer ${API_KEY}`;
+if (API_TOKEN) {
+  apiClient.defaults.headers.common["Authorization"] = `Bearer ${API_TOKEN}`;
 }
 
 export interface NotesResponse {
